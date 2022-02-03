@@ -13,6 +13,7 @@ import flask
 from flask import Flask, Response, request, render_template, redirect, url_for
 from flaskext.mysql import MySQL
 import flask_login
+from passlib.hash import sha256_crypt
 
 #for image uploading
 import os, base64
@@ -23,7 +24,7 @@ app.secret_key = 'super secret string'  # Change this!
 
 #These will need to be changed according to your creditionals
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'cs460'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'ph0tosApp!'
 app.config['MYSQL_DATABASE_DB'] = 'photoshare'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -94,7 +95,7 @@ def login():
 	if cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email)):
 		data = cursor.fetchall()
 		pwd = str(data[0][0] )
-		if flask.request.form['password'] == pwd:
+		if sha256_crypt.verify(flask.request.form['password'], pwd):
 			user = User()
 			user.id = email
 			flask_login.login_user(user) #okay login in user
@@ -122,7 +123,7 @@ def register():
 def register_user():
 	try:
 		email=request.form.get('email')
-		password=request.form.get('password')
+		password = sha256_crypt.encrypt(request.form.get('password'))
 	except:
 		print("couldn't find all tokens") #this prints to shell, end users will not see this (all print statements go to shell)
 		return flask.redirect(flask.url_for('register'))
