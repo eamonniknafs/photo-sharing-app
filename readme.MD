@@ -8,4 +8,4 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vestibulum
 
 ### ER Model
 
-![ER Model](resources/ER-model.svg)
+![ER Model](resources/ER-Model.svg)
