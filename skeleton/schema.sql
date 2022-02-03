@@ -19,10 +19,10 @@ CREATE TABLE Users (
 CREATE TABLE Pictures
 (
   picture_id int4  AUTO_INCREMENT,
-  user_id int4,
   imgdata longblob ,
   caption VARCHAR(255),
   INDEX upid_idx (user_id),
+  CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES Users(user_id),
   CONSTRAINT pictures_pk PRIMARY KEY (picture_id)
 );
 
@@ -32,6 +32,8 @@ CREATE TABLE Comments
   is_like BOOLEAN,
   date_created datetime DEFAULT(getdate()),
   content VARCHAR(255),
+  CONSTRAINT picture_fk FOREIGN KEY (picture_id) REFERENCES Pictures(picture_id)
+  CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES Users(user_id)
   CONSTRAINT comments_pk PRIMARY KEY (comment_id)
 );
 
@@ -41,5 +43,6 @@ CREATE TABLE Albums
   album_name VARCHAR(255),
   album_description longblob ,
   date_created datetime DEFAULT(getdate()),
+  CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES Users(user_id),
   CONSTRAINT album_pk PRIMARY KEY (album_id)
 );
