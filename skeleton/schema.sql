@@ -55,7 +55,9 @@ CREATE TABLE Albums
   description VARCHAR(255),
   date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   username VARCHAR(255) NOT NULL,
-  CONSTRAINT fk_album_user FOREIGN KEY (username) REFERENCES Users(username)
+  cover_photo_id int4,
+  CONSTRAINT fk_album_user FOREIGN KEY (username) REFERENCES Users(username),
+  CONSTRAINT fk_album_cover FOREIGN KEY (cover_photo_id) REFERENCES Pictures(picture_id)
 );
 
 CREATE TABLE Tags
