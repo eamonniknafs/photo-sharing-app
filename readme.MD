@@ -6,6 +6,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vestibulum
 
 ## Database Design
 
+### Assumptions
+
+1. Each user can have none or any number of albums
+2. Each user can have none or any number of friends
+3. Every album can contain none or any number of photos
+4. Each photo can only be in one album
+5. Each photo can have none or any number of tags
+6. Multiple photos can be tagged with the same tag
+7. Comments can be published without being associated with a user
+
 ### ER Model
 
-![ER Model](resources/ER.svg)
+![ER Model](resources/ER-model.png)
