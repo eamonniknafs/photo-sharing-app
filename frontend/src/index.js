@@ -2,11 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import {
   Navigation,
   Footer,
   Home,
+  Login,
+  Register,
 } from "./components";
 
 ReactDOM.render(
@@ -14,6 +18,9 @@ ReactDOM.render(
     <Navigation />
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      
     </Routes>
     <Footer />
   </Router>,
