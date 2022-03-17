@@ -9,6 +9,7 @@
 # see links for further understanding
 ###################################################
 
+import time
 import flask
 from flask import Flask, Response, request, render_template, redirect, url_for
 from flaskext.mysql import MySQL
@@ -195,6 +196,10 @@ def upload_file():
 def hello():
 	return render_template('hello.html', message='Welecome to Photoshare')
 
+
+@app.route('/api')
+def get_current_time():
+    return {'time': time.time()}
 
 if __name__ == "__main__":
 	#this is invoked when in the shell  you run
