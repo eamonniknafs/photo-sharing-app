@@ -1,0 +1,58 @@
+.ball {
+  display: block;
+  width: 1em;
+  height: 1em;
+  border-radius: 0.5em;
+  background: #555; /* change color here */
+  position: absolute;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+}
+
+@keyframes reveal {
+  from {
+    transform: scale(0.001);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes slide {
+  to {
+    transform: translateX(1em);
+  }
+}
+
+.ball:nth-child(1),
+.ball:nth-child(2) {
+  left: 0;
+  animation-name: reveal;
+}
+.ball:nth-child(3) {
+  left: 0.5em;
+  animation-name: slide;
+}
+.ball:nth-child(4) {
+  left: 2em;
+  animation-name: reveal;
+  animation-direction: reverse;
+}
+
+.loading {
+  opacity: 0;
+  font-size: 20px; /* change size here */
+  position: relative;
+  width: 4em;
+  height: 1em;
+  margin: 10px auto;
+}
+
+.loading.show {
+  opacity: 1;
+}
+
+#container {
+  margin-bottom: 50px;
+}

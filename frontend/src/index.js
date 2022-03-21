@@ -11,7 +11,8 @@ import {
   Home,
   Login,
   Register,
-  Profile
+  Profile,
+  Explore
 } from "./components";
 
 ReactDOM.render(
@@ -22,9 +23,9 @@ ReactDOM.render(
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<Profile />}/>
-      
+      <Route path="/explore" element={<Explore />} />
     </Routes>
-    <Footer />
+    {/* <Footer /> */}
   </Router>,
   document.getElementById('root')
 );

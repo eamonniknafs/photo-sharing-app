@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Container, Card, Form, Button } from 'react-bootstrap';
+import { ReactSession } from 'react-client-session';
 
 export default class Login extends Component {
     render() {

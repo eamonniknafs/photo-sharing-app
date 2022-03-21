@@ -7118,6 +7118,11 @@ react-bootstrap@^2.2.1:
     uncontrollable "^7.2.1"
     warning "^4.0.3"
 
+react-client-session@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/react-client-session/-/react-client-session-0.0.8.tgz#b5b5b5824b4d70490999adceb405dcba88de2b72"
+  integrity sha512-wHCTD4lEE8mzl6kxL8viL4q5kGx2TJJNaWdvzmx3KeiMgP+Yv5/Bx476jCpPD0pKc5VvdVuhkH4EM20XqtT/sQ==
+
 react-dev-utils@^12.0.0:
   version "12.0.0"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-12.0.0.tgz#4eab12cdb95692a077616770b5988f0adf806526"
