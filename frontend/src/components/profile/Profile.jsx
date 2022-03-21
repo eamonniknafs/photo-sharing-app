@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { Container, Image, Card, Col, Row } from 'react-bootstrap';
 
-export default class Profile extends Component {
-    render() {
-        return (
-            <Container className="center">
-                <Card>
-                    <Card.Body>
-                        <Container>
+function Profile() {
+    return (
+        <Container className="center">
+            <Card>
+                <Card.Body>
+                    <Container>
 
                         <Card.Title><h1>Profile</h1></Card.Title>
                         <Image width="100px" style={{ 'border-style': 'thin', 'border-width': 'thick' }} src="../../defprofile.jpg" roundedCircle />
@@ -32,12 +31,12 @@ export default class Profile extends Component {
                         <h5>Member since:</h5>
                         <h6>[VALUE]</h6>
 
-                        </Container>
-                    </Card.Body>
+                    </Container>
+                </Card.Body>
 
-                </Card>
-            </Container >
-
-        );
-    }
+            </Card>
+        </Container >
+    );
 }
+
+export default Profile;
