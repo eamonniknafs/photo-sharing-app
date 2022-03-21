@@ -116,11 +116,11 @@ def unauthorized_handler():
 	return render_template('unauth.html')
 
 #you can specify specific methods (GET/POST) in function header instead of inside the functions as seen earlier
-@app.route("/register", methods=['GET'])
+@app.route("/api/register", methods=['GET'])
 def register():
 	return render_template('register.html', supress='True')
 
-@app.route("/register", methods=['POST'])
+@app.route("/api/register", methods=['POST'])
 def register_user():
 	try:
 		email=request.form.get('email')
