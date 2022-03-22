@@ -1,8 +1,7 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav, Container } from 'react-bootstrap';
 
-function Navigation() {
+function Navigation( props ) {
     return (
         <Navbar sticky="top" bg="dark" variant="dark">
             <Container>
@@ -11,29 +10,43 @@ function Navigation() {
                 </Navbar.Brand>
                 <Nav className="me-auto">
                     <Nav.Link as={NavLink} to="/">
-                        Home
-                    </Nav.Link>
-                    <Nav.Link as={NavLink} to="/login">
-                        Login
-                    </Nav.Link>
-                    <Nav.Link as={NavLink} to="/register">
-                        Register
+                        Explore
                     </Nav.Link>
                     <Nav.Link as={NavLink} to="/profile">
                         Profile
                     </Nav.Link>
-                    <Nav.Link as={NavLink} to="/explore">
-                        Explore
-                    </Nav.Link>
                 </Nav>
-                <Navbar.Collapse className="justify-content-end">
-                    <Navbar.Text>
-                        Signed in as: <a href="#login">Mark Otto</a>
-                    </Navbar.Text>
+                <Navbar.Collapse className="justify-content-end" >
+                    {props.token != null ?
+                        <LoggedIn profileData={props.profileData} /> :
+                        <LoggedOut />}
                 </Navbar.Collapse>
+
             </Container>
         </Navbar >
     );
 }
+
+function LoggedIn(props) {
+    return (
+        <Navbar.Text>
+            Signed in as: <a href="/profile">{props.profileData.username}</a>
+        </Navbar.Text>
+    );
+}
+
+function LoggedOut() {
+    return (
+        <Nav className="justify-content-end" >
+            <Nav.Link as={NavLink} to="/login">
+                Login
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/register">
+                Register
+            </Nav.Link>
+        </Nav>
+    );
+}
+
 
 export default Navigation;

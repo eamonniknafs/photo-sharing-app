@@ -1,7 +1,4 @@
 Flask
-Flask-Login
 flask-mysql
-Flask-SQLAlchemy
-requests
-Werkzeug
 passlib
+flask_jwt_extended
