@@ -1,10 +1,9 @@
 import Gallery from "react-photo-gallery";
-import { Button, Container } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
 import './explore.css'
+import { useEffect } from 'react';
 
 function Explore( props ) {
-    console.log(props.photos)
-
     function loadMore() {
         props.addPhotos([{
             src: "https://source.unsplash.com/2ShvY8Lf6l0/800x599",
@@ -94,17 +93,22 @@ function Explore( props ) {
         console.log(props.photos)
     }
 
-    function handleScroll(evt) {
-        const target = evt.target;
-        if (target.scrollHeight - target.scrollTop === target.clientHeight){
-            loadMore()
+    useEffect(() => {
+        const scrolling_function = () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight-10) {
+                console.log("fetching more.........")
+                window.removeEventListener('scroll', scrolling_function)
+                loadMore()
+            }
         }
-    }
+        window.addEventListener('scroll', scrolling_function);
+    }, [props.photos])
 
     return (
-        <div className="content" onScroll={handleScroll}>
+        <Container fluid className="content">
             <Gallery photos={props.photos} />
-        </div>
+            <Spinner animation="grow" />
+        </Container>
     );
 }
 
