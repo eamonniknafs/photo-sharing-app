@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS Tagged;
 DROP TABLE IF EXISTS Album_Contents;
 
 DROP TABLE IF EXISTS Comments CASCADE;
-ALTER TABLE Albums DROP CONSTRAINT fk_album_cover;
+ALTER TABLE Albums DROP CONSTRAINT fk_album_cover; -- Only run this line when re-creating the database, not upon initial creation
 DROP TABLE IF EXISTS Pictures CASCADE;
 DROP TABLE IF EXISTS Albums CASCADE;
 DROP TABLE IF EXISTS Users CASCADE;
@@ -18,9 +18,9 @@ CREATE TABLE Users (
   first_name varchar(255) NOT NULL,
   last_name varchar(255) NOT NULL,
   email varchar(255) UNIQUE NOT NULL,
-  dob DATE NOT NULL,
-  hometown varchar(255) NOT NULL,
-  gender VARCHAR(255) NOT NULL,
+  dob DATE,
+  hometown varchar(255),
+  gender VARCHAR(255),
   password_hash varchar(255) NOT NULL
 );
 
