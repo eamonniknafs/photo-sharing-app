@@ -15,15 +15,15 @@ import {
 
 function App() {
   const { token, removeToken, setToken } = useToken();
-  const { profileData, removeProfileData, setProfileData, updateProfileData } = useProfileData();
+  const { profileData, removeProfileData, setProfileData, fetchProfileData } = useProfileData();
   const { photos, setPhotos, addPhotos } = usePhotos();
 
   return (
     <Router>
       <Navigation profileData={profileData} token={token} />
       <Routes>
-        <Route path="/login" element={<Login setToken={setToken} updateProfileData={ updateProfileData }  />} />
-        <Route path="/register" element={<Register setToken={setToken} updateProfileData={updateProfileData} />} />
+        <Route path="/login" element={<Login setToken={setToken} fetchProfileData={fetchProfileData }  />} />
+        <Route path="/register" element={<Register setToken={setToken} fetchProfileData={fetchProfileData} />} />
         <Route path="/profile" element={<Profile profileData={profileData} />} />
         <Route path="/" element={<Explore photos={photos} setPhotos={setPhotos} addPhotos={addPhotos} />} />
       </Routes>

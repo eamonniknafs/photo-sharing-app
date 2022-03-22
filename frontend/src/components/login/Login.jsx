@@ -19,7 +19,7 @@ function Login( props ) {
             body: JSON.stringify(formData)
         }).then(function (response) { return response.json(); })
             .then(function (data) {
-                props.updateProfileData(data.access_token)
+                props.fetchProfileData(data.access_token)
                 props.setToken(data.access_token)
                 navigate('/profile')
             })
