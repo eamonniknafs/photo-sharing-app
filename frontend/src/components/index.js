@@ -7,3 +7,4 @@ export { default as Profile } from "./profile/Profile";
 export { default as Explore } from "./explore/Explore";
 export { default as useToken } from "./hooks/useToken";
 export { default as useProfileData } from "./hooks/useProfileData";
+export { default as usePhotos } from "./hooks/usePhotos";

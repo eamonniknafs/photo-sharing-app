@@ -9,12 +9,14 @@ import {
   Profile,
   Explore,
   useToken,
-  useProfileData
+  useProfileData,
+  usePhotos
 } from "./components";
 
 function App() {
   const { token, removeToken, setToken } = useToken();
   const { profileData, removeProfileData, setProfileData, updateProfileData } = useProfileData();
+  const { photos, setPhotos, addPhotos } = usePhotos();
 
   return (
     <Router>
@@ -23,7 +25,7 @@ function App() {
         <Route path="/login" element={<Login setToken={setToken} updateProfileData={ updateProfileData }  />} />
         <Route path="/register" element={<Register setToken={setToken} updateProfileData={updateProfileData} />} />
         <Route path="/profile" element={<Profile profileData={profileData} />} />
-        <Route path="/" element={<Explore />} />
+        <Route path="/" element={<Explore photos={photos} setPhotos={setPhotos} addPhotos={addPhotos} />} />
       </Routes>
       {/* <Footer /> */}
     </Router>
