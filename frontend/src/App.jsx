@@ -8,6 +8,7 @@ import {
   Register,
   Profile,
   Explore,
+  Uploads,
   useToken,
   useProfileData,
   usePhotos
@@ -26,6 +27,7 @@ function App() {
         <Route path="/register" element={<Register setToken={setToken} fetchProfileData={fetchProfileData} />} />
         <Route path="/profile" element={<Profile profileData={profileData} />} />
         <Route path="/" element={<Explore photos={photos} setPhotos={setPhotos} addPhotos={addPhotos} />} />
+        <Route path="/upload" element={<Uploads token={token } />}/>
       </Routes>
       {/* <Footer /> */}
     </Router>

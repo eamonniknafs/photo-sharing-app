@@ -486,3 +486,4 @@ unittest/strings/strings-t
 
 #VSCode
 .vscode**
+**/tmp/**

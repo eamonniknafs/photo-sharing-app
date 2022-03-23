@@ -3,6 +3,9 @@ from flask import Flask, Response, request, jsonify
 from flaskext.mysql import MySQL
 from passlib.hash import sha256_crypt
 from flask_jwt_extended import create_access_token, unset_jwt_cookies, get_jwt_identity, jwt_required, JWTManager
+import werkzeug.formparser
+from werkzeug.utils import secure_filename
+import time
 
 #for image uploading
 import os, base64
@@ -108,8 +111,8 @@ def isEmailUnique(email):
 @app.route('/api/profile', methods=['POST'])
 @jwt_required()
 def profile():
-	#get user id
 	_, cursor = connectToDB()
+	#get email
 	email = get_jwt_identity()
 	print(email)
 	if cursor.execute("SELECT first_name, last_name, dob, email, hometown, gender, date_created, username FROM Users  WHERE email = '{0}'".format(email)):
@@ -130,9 +133,27 @@ def profile():
 
 #begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-def allowed_file(filename):
-	return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+ALLOWED_TYPES = set(['image'])
+def allowed_file(mimetype):
+	return '/' in mimetype and mimetype.split('/')[0] in ALLOWED_TYPES
+
+@app.route('/api/upload', methods=['POST'])
+@jwt_required()
+def upload_file():
+	conn, cursor = connectToDB()
+	#get user id
+	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
+	print(request.files)
+	files = request.files
+	for f in files:
+		if not allowed_file(files[f].mimetype):
+			return Response(status=400)
+		photo_data = files[f].read()
+		cursor.execute('''INSERT INTO Pictures (imgdata, username) VALUES (%s, %s)''' ,(photo_data,username))
+		conn.commit()
+		print("Saved file: "+secure_filename(files[f].filename)+" of type: "+files[f].mimetype)
+	return Response(status=200)
 
 # @app.route('/upload', methods=['GET', 'POST'])
 # @flask_login.login_required
@@ -156,7 +177,6 @@ def allowed_file(filename):
 # @app.route("/", methods=['GET'])
 # def hello():
 # 	return render_template('hello.html', message='Welecome to Photoshare')
-
 
 if __name__ == "__main__":
 	#this is invoked when in the shell  you run

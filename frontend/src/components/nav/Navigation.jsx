@@ -15,6 +15,9 @@ function Navigation( props ) {
                     <Nav.Link as={NavLink} to="/profile">
                         Profile
                     </Nav.Link>
+                    <Nav.Link as={NavLink} to="/upload">
+                        Upload
+                    </Nav.Link>
                 </Nav>
                 <Navbar.Collapse className="justify-content-end" >
                     {props.token != null ?
