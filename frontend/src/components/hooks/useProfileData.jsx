@@ -46,6 +46,7 @@ function useProfileData() {
             since: null,
             username: null
         }));
+        console.log('logout')
     }
 
     function fetchProfileData(token) {

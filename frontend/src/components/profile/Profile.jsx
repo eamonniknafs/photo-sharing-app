@@ -1,7 +1,6 @@
 import { Container, Card } from 'react-bootstrap';
 
 function Profile(props) {
-    console.log(JSON.stringify(props.token))
     return (
         <Container className="center">
             <Card className="inner">

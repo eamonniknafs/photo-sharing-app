@@ -150,34 +150,19 @@ def upload_file():
 		if not allowed_file(files[f].mimetype):
 			return Response(status=400)
 		photo_data = files[f].read()
-		cursor.execute('''INSERT INTO Pictures (imgdata, username) VALUES (%s, %s)''' ,(photo_data,username))
+		cursor.execute('''INSERT INTO Pictures (imgdata, username) VALUES (%s, %s)''',(photo_data,username))
 		conn.commit()
 		print("Saved file: "+secure_filename(files[f].filename)+" of type: "+files[f].mimetype)
 	return Response(status=200)
 
-# @app.route('/upload', methods=['GET', 'POST'])
-# @flask_login.login_required
+# @app.route('/api/gallery', methods=['POST'])
 # def upload_file():
-# 	if request.method == 'POST':
-# 		uid = getUserIdFromEmail(flask_login.current_user.id)
-# 		imgfile = request.files['photo']
-# 		caption = request.form.get('caption')
-# 		photo_data =imgfile.read()
-# 		cursor = conn.cursor()
-# 		cursor.execute('''INSERT INTO Pictures (imgdata, user_id, caption) VALUES (%s, %s, %s )''' ,(photo_data,uid, caption))
-# 		conn.commit()
-# 		return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!', photos=getUsersPhotos(uid),base64=base64)
-# 	#The method is GET so we return a  HTML form to upload the a photo.
-# 	else:
-# 		return render_template('upload.html')
-# #end photo uploading code
+# 	conn, cursor = connectToDB()
+# 	#get user id
 
 
-# #default page
-# @app.route("/", methods=['GET'])
-# def hello():
-# 	return render_template('hello.html', message='Welecome to Photoshare')
-
+	
+	return Response(status=200)
 if __name__ == "__main__":
 	#this is invoked when in the shell  you run
 	#$ python app.py

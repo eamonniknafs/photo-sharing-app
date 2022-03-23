@@ -21,7 +21,7 @@ function App() {
 
   return (
     <Router>
-      <Navigation profileData={profileData} token={token} />
+      <Navigation props={{ profileData, token, removeProfileData, removeToken}} />
       <Routes>
         <Route path="/login" element={<Login setToken={setToken} fetchProfileData={fetchProfileData }  />} />
         <Route path="/register" element={<Register setToken={setToken} fetchProfileData={fetchProfileData} />} />

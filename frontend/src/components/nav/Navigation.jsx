@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 
-function Navigation( props ) {
+function Navigation(props) {
     return (
         <Navbar sticky="top" bg="dark" variant="dark">
             <Container>
@@ -12,18 +12,20 @@ function Navigation( props ) {
                     <Nav.Link as={NavLink} to="/">
                         Explore
                     </Nav.Link>
-                    <Nav.Link as={NavLink} to="/profile">
-                        Profile
-                    </Nav.Link>
-                    <Nav.Link as={NavLink} to="/upload">
-                        Upload
-                    </Nav.Link>
+                    {props.props.token != null ?
+                        <Nav>
+                            <Nav.Link as={NavLink} to="/profile">
+                                Profile
+                            </Nav.Link>
+                            <Nav.Link as={NavLink} to="/upload">
+                                Upload
+                            </Nav.Link>
+                        </Nav > :
+                        null}
                 </Nav>
-                <Navbar.Collapse className="justify-content-end" >
-                    {props.token != null ?
-                        <LoggedIn profileData={props.profileData} /> :
-                        <LoggedOut />}
-                </Navbar.Collapse>
+                {props.props.token != null ?
+                    <LoggedIn props={props.props} /> :
+                    <LoggedOut />}
 
             </Container>
         </Navbar >
@@ -31,23 +33,38 @@ function Navigation( props ) {
 }
 
 function LoggedIn(props) {
+    function logout() {
+        props.props.removeToken()
+        props.props.removeProfileData()
+    }
     return (
-        <Navbar.Text>
-            Signed in as: <a href="/profile">{props.profileData.username}</a>
-        </Navbar.Text>
+        <Navbar.Collapse className="justify-content-end" >
+            <Nav className="justify-content-end" >
+                <Navbar.Text>
+                    Signed in as: <a href="/profile">{props.props.profileData.username}</a>
+                </Navbar.Text>
+                <Button variant="outline-secondary" style={{marginLeft:'20px'}} onClick={logout}>
+                    Logout
+                </Button>
+            </Nav>
+        </Navbar.Collapse >
+
     );
 }
 
 function LoggedOut() {
     return (
-        <Nav className="justify-content-end" >
-            <Nav.Link as={NavLink} to="/login">
-                Login
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/register">
-                Register
-            </Nav.Link>
-        </Nav>
+        <Navbar.Collapse className="justify-content-end" >
+            <Nav className="space-between" >
+                <Nav.Link as={NavLink} to="/login">
+                    Login
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/register">
+                    Register
+                </Nav.Link>
+            </Nav>
+        </Navbar.Collapse>
+
     );
 }
 
