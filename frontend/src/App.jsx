@@ -17,17 +17,17 @@ import {
 function App() {
   const { token, removeToken, setToken } = useToken();
   const { profileData, removeProfileData, setProfileData, fetchProfileData } = useProfileData();
-  const { photos, setPhotos, addPhotos } = usePhotos();
+  const { photos, setPhotos, addPhotos, fetchPhotos, loading } = usePhotos();
 
   return (
     <Router>
-      <Navigation props={{ profileData, token, removeProfileData, removeToken}} />
+      <Navigation props={{ profileData, token, removeProfileData, removeToken }} />
       <Routes>
-        <Route path="/login" element={<Login setToken={setToken} fetchProfileData={fetchProfileData }  />} />
-        <Route path="/register" element={<Register setToken={setToken} fetchProfileData={fetchProfileData} />} />
+        <Route path="/login" element={<Login props={{ setToken, fetchProfileData }}  />} />
+        <Route path="/register" element={<Register props={{ setToken, fetchProfileData }} />} />
         <Route path="/profile" element={<Profile profileData={profileData} />} />
-        <Route path="/" element={<Explore photos={photos} setPhotos={setPhotos} addPhotos={addPhotos} />} />
-        <Route path="/upload" element={<Uploads token={token } />}/>
+        <Route path="/" element={<Explore props={{ photos, setPhotos, addPhotos, fetchPhotos, loading }} />} />
+        <Route path="/upload" element={<Uploads token={ token } />}/>
       </Routes>
       {/* <Footer /> */}
     </Router>

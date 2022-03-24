@@ -1,170 +1,71 @@
 import { useState } from "react";
 
 function usePhotos() {
-    function addPhotos(newPhotos){
-        var newP = []
-        photos.forEach(element => {
-            newP.push(element)
-        });
-        newPhotos.forEach(element =>{
-            newP.push(element)
-        });
-        setPhotos(newP)
+    const [photos, setPhotos] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    function addPhotos(newPhotos) {
+        for (var idx in newPhotos) {
+            setPhotos(photos => [...photos, newPhotos[idx]]);
+        }
+    }
+
+    function fetchPhotos() {
+        fetch('/api/explore', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function (response) { return response.json(); })
+            .then(function (data) {
+                for (var idx in data) {
+                    fetchPhotoSrc(data[idx][0])
+                    // console.log("fetched: " + data[idx][0])
+                }
+            });
+
     }
 
 
-    const [photos, setPhotos] = useState([
-        {
-            src: "https://source.unsplash.com/2ShvY8Lf6l0/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/Dm-qxdynoEc/800x799",
-            width: 1,
-            height: 1
-        },
-        {
-            src: "https://source.unsplash.com/qDkso9nvCg0/600x799",
-            width: 3,
-            height: 4
-        },
-        {
-            src: "https://source.unsplash.com/iecJiKe_RNg/600x799",
-            width: 3,
-            height: 4
-        },
-        {
-            src: "https://source.unsplash.com/epcsn8Ed8kY/600x799",
-            width: 3,
-            height: 4
-        },
-        {
-            src: "https://source.unsplash.com/NQSWvyVRIJk/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/zh7GEuORbUw/600x799",
-            width: 3,
-            height: 4
-        },
-        {
-            src: "https://source.unsplash.com/PpOHJezOalU/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/I1ASdgphUH4/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/XiDA78wAZVw/600x799",
-            width: 3,
-            height: 4
-        },
-        {
-            src: "https://source.unsplash.com/x8xJpClTvR0/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/u9cG4cuJ6bU/4927x1000",
-            width: 4927,
-            height: 1000
-        },
-        {
-            src: "https://source.unsplash.com/qGQNmBE7mYw/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/NuO6iTBkHxE/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/pF1ug8ysTtY/600x400",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/A-fubu9QJxE/800x533",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/5P91SF0zNsI/740x494",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/NQSWvyVRIJk/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/zh7GEuORbUw/600x799",
-            width: 3,
-            height: 4
-        },
-        {
-            src: "https://source.unsplash.com/PpOHJezOalU/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/I1ASdgphUH4/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/XiDA78wAZVw/600x799",
-            width: 3,
-            height: 4
-        },
-        {
-            src: "https://source.unsplash.com/x8xJpClTvR0/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/u9cG4cuJ6bU/4927x1000",
-            width: 4927,
-            height: 1000
-        },
-        {
-            src: "https://source.unsplash.com/qGQNmBE7mYw/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/NuO6iTBkHxE/800x599",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/pF1ug8ysTtY/600x400",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/A-fubu9QJxE/800x533",
-            width: 4,
-            height: 3
-        },
-        {
-            src: "https://source.unsplash.com/5P91SF0zNsI/740x494",
-            width: 4,
-            height: 3
-        },
-    ]);
+    function gcd(a, b) {
+        if (b === 0) {
+            return a
+        }
+        return gcd(b, a % b)
+    }
+
+    function fetchPhotoSrc(id) {
+        fetch('/api/photo/' + id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            return response.blob().then((blob) => {
+                return {
+                    blob: blob,
+                    width: response.headers.get('width'),
+                    height: response.headers.get('height')
+                };
+            });
+        }).then(({ blob, width, height }) => {
+            let src = URL.createObjectURL(blob)
+            addPhotos([{
+                src: src,
+                width: parseInt(width),
+                height: parseInt(height)
+            }])
+            // console.log({ blob, width, height })
+        });
+    }
+
 
     return {
         photos,
         setPhotos,
-        addPhotos
+        addPhotos,
+        fetchPhotos,
+        loading
     }
 }
 
