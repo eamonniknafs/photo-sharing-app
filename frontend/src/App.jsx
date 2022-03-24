@@ -1,4 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import {
@@ -19,6 +21,7 @@ function App() {
   const { profileData, removeProfileData, setProfileData, fetchProfileData } = useProfileData();
   const { photos, setPhotos, addPhotos, fetchPhotos, loading } = usePhotos();
 
+  library.add(fas)
   return (
     <Router>
       <Navigation props={{ profileData, token, removeProfileData, removeToken }} />

@@ -9,3 +9,4 @@ export { default as Uploads } from "./uploads/Uploads";
 export { default as useToken } from "./hooks/useToken";
 export { default as useProfileData } from "./hooks/useProfileData";
 export { default as usePhotos } from "./hooks/usePhotos";
+export { default as Gal } from "./gallery/Gal";

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function usePhotos() {
     const [photos, setPhotos] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     function addPhotos(newPhotos) {
         for (var idx in newPhotos) {
@@ -10,19 +10,22 @@ function usePhotos() {
         }
     }
 
-    function fetchPhotos() {
-        fetch('/api/explore', {
+    function fetchPhotos(numLoaded, num) {
+        setLoading(true)
+        fetch('/api/explore/' + numLoaded + '&' + num, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(function (response) { return response.json(); })
-            .then(function (data) {
-                for (var idx in data) {
-                    fetchPhotoSrc(data[idx][0])
-                }
-            });
-
+        }).then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            console.log(data)
+            for (var idx in data) {
+                fetchPhotoSrc(data[idx][0])
+            }
+        }).catch(() => (console.log('NO MORE DATA')));
+        setLoading(false)
     }
 
     function fetchPhotoSrc(id) {

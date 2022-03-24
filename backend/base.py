@@ -162,11 +162,14 @@ def upload_file():
 		print("Saved file: "+secure_filename(files[f].filename)+" of type: "+files[f].mimetype)
 	return Response(status=200)
 
-@app.route('/api/explore', methods=['GET'])
-def explore():
+@app.route('/api/explore/<start>&<count>', methods=['GET'])
+def explore(start, count):
 	_, cursor = connectToDB()
-	cursor.execute("SELECT picture_id, type FROM Pictures")
-	return jsonify(cursor.fetchall())
+	cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id > '{0}' LIMIT {1}".format(start, count))
+	output = cursor.fetchall()
+	if len(output) == 0:
+		return 'no more data', 200
+	return jsonify(output)
 
 @app.route('/api/photo/<id>', methods=['GET'])
 def get_photo(id):
@@ -177,7 +180,6 @@ def get_photo(id):
 	mimetype = output[1]
 	im = Image.open(BytesIO(imgdata))
 	width, height = im.size
-	print(width, height)
 	return imgdata, 200, {'Content-Type': mimetype, 'width': width, 'height': height}
 if __name__ == "__main__":
 	#this is invoked when in the shell  you run
