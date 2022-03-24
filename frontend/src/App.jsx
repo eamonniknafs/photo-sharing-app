@@ -19,7 +19,7 @@ import {
 function App() {
   const { token, removeToken, setToken } = useToken();
   const { profileData, removeProfileData, setProfileData, fetchProfileData } = useProfileData();
-  const { photos, setPhotos, addPhotos, fetchPhotos, loading } = usePhotos();
+  const { photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable } = usePhotos();
 
   library.add(fas)
   return (
@@ -28,8 +28,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login props={{ setToken, fetchProfileData }} />} />
         <Route path="/register" element={<Register props={{ setToken, fetchProfileData }} />} />
-        <Route path="/profile" element={<Profile profileData={profileData} />} />
-        <Route path="/" element={<Explore props={{ photos, setPhotos, addPhotos, fetchPhotos, loading }} />} />
+        <Route path="/profile" element={<Profile profileData={profileData} gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable }} />} />
+        <Route path="/" element={<Explore gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable }} />} />
         <Route path="/upload" element={<Uploads token={token} />} />
       </Routes>
       {/* <Footer /> */}

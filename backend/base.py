@@ -162,10 +162,16 @@ def upload_file():
 		print("Saved file: "+secure_filename(files[f].filename)+" of type: "+files[f].mimetype)
 	return Response(status=200)
 
-@app.route('/api/explore/<start>&<count>', methods=['GET'])
-def explore(start, count):
+@app.route('/api/explore/<start>&<count>', defaults={'username': None},  methods=['GET'])
+@app.route('/api/explore/<start>&<count>?<username>', methods=['GET'])
+def explore(start, count, username):
 	_, cursor = connectToDB()
-	cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id > '{0}' LIMIT {1}".format(start, count))
+	cursor.execute("SELECT picture_id FROM Pictures ORDER BY picture_id DESC LIMIT 0, 1")
+	last_id = cursor.fetchone()[0]
+	if username == None:
+		cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id < '{0}' ORDER BY picture_id DESC LIMIT {1}".format(int(last_id+1) - int(start), count))
+	else:
+		cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id < '{0}' AND username = {1} ORDER BY picture_id DESC LIMIT {2} ".format(last_id+1 - start, username, count))
 	output = cursor.fetchall()
 	if len(output) == 0:
 		return 'no more data', 200
@@ -174,13 +180,14 @@ def explore(start, count):
 @app.route('/api/photo/<id>', methods=['GET'])
 def get_photo(id):
 	_, cursor = connectToDB()
-	cursor.execute("SELECT imgdata, type FROM Pictures WHERE picture_id = '{0}'".format(id))
+	cursor.execute("SELECT imgdata, type, username FROM Pictures WHERE picture_id = '{0}'".format(id))
 	output = cursor.fetchone()
 	imgdata = output[0]
 	mimetype = output[1]
+	username = output[2]
 	im = Image.open(BytesIO(imgdata))
 	width, height = im.size
-	return imgdata, 200, {'Content-Type': mimetype, 'width': width, 'height': height}
+	return imgdata, 200, {'Content-Type': mimetype, 'width': width, 'height': height, 'username': username}
 if __name__ == "__main__":
 	#this is invoked when in the shell  you run
 	#$ python app.py

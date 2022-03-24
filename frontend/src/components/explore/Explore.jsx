@@ -3,7 +3,7 @@ import Gal from "../gallery/Gal";
 function Explore(props) {
    
     return (
-        <Gal props={props.props}/>
+        <Gal gallery={props.gallery}/>
     );
 }
 
