@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Card, Form, Button, Toast, NavLink } from 'react-bootstrap';
+import { Container, Card, Form, Button, Toast } from 'react-bootstrap';
 
-function Login( props ) {
+function Login(props) {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -22,18 +22,19 @@ function Login( props ) {
             body: JSON.stringify(formData)
         }).then(function (response) { return response.json(); })
             .then(function (data) {
-                if (data.success) {
-                    props.setToken(data.token)
-                    props.setProfileData(data.profileData)
-                    navigate("/profile")
-                }
                 if (data === "user not found") {
                     setShowA(true)
                 } else if (data === "wrong password") {
                     setShowB(true)
+                } else {
+                    console.log(data.access_token)
+                    props.props.fetchProfileData(data.access_token)
+                    props.props.setToken(data.access_token)
+                    navigate("/profile")
                 }
+                console.log(data)
             })
-        console.log(sessionStorage.getItem('token'))
+        // console.log(sessionStorage.getItem('token'))
         // console.log(JSON.stringify(formData))
     }
 
@@ -74,17 +75,17 @@ function Login( props ) {
                     </Button>
                 </Form>
             </Card>
-            <Toast show={showA} bg="warning" onClose={() => setShowA(false)}  delay={5000} autohide className="center-bottom">
+            <Toast show={showA} bg="warning" onClose={() => setShowA(false)} delay={4000} autohide className="login-warning">
                 <Toast.Header>
-                    <i class="fas fa-info-circle"></i>
+                    <i className="fas fa-info-circle"></i>
                     <strong className="me-auto">No Account Found</strong>
                     {/* <small>11 mins ago</small> */}
                 </Toast.Header>
                 <Toast.Body>That email isn't registerd! Please register above.</Toast.Body>
             </Toast>
-            <Toast show={showB} bg="danger" onClose={() => setShowB(false)} delay={5000} autohide className="center-bottom">
+            <Toast show={showB} bg="danger" onClose={() => setShowB(false)} delay={4000} autohide className="login-warning">
                 <Toast.Header>
-                    <i class="fas fa-info-circle"></i>
+                    <i className="fas fa-info-circle"></i>
                     <strong className="me-auto">Wrong Password</strong>
                     {/* <small>11 mins ago</small> */}
                 </Toast.Header>

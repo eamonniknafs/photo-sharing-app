@@ -20,18 +20,9 @@ function usePhotos() {
             .then(function (data) {
                 for (var idx in data) {
                     fetchPhotoSrc(data[idx][0])
-                    // console.log("fetched: " + data[idx][0])
                 }
             });
 
-    }
-
-
-    function gcd(a, b) {
-        if (b === 0) {
-            return a
-        }
-        return gcd(b, a % b)
     }
 
     function fetchPhotoSrc(id) {
@@ -55,7 +46,6 @@ function usePhotos() {
                 width: parseInt(width),
                 height: parseInt(height)
             }])
-            // console.log({ blob, width, height })
         });
     }
 

@@ -23,11 +23,11 @@ function App() {
     <Router>
       <Navigation props={{ profileData, token, removeProfileData, removeToken }} />
       <Routes>
-        <Route path="/login" element={<Login props={{ setToken, fetchProfileData }}  />} />
+        <Route path="/login" element={<Login props={{ setToken, fetchProfileData }} />} />
         <Route path="/register" element={<Register props={{ setToken, fetchProfileData }} />} />
         <Route path="/profile" element={<Profile profileData={profileData} />} />
         <Route path="/" element={<Explore props={{ photos, setPhotos, addPhotos, fetchPhotos, loading }} />} />
-        <Route path="/upload" element={<Uploads token={ token } />}/>
+        <Route path="/upload" element={<Uploads token={token} />} />
       </Routes>
       {/* <Footer /> */}
     </Router>
