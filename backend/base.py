@@ -3,6 +3,11 @@ from flask import Flask, Response, request, jsonify
 from flaskext.mysql import MySQL
 from passlib.hash import sha256_crypt
 from flask_jwt_extended import create_access_token, unset_jwt_cookies, get_jwt_identity, jwt_required, JWTManager
+import werkzeug.formparser
+from werkzeug.utils import secure_filename
+import time
+from PIL import Image
+from io import BytesIO
 
 #for image uploading
 import os, base64
@@ -48,6 +53,10 @@ def login():
 		if sha256_crypt.verify(request.json.get('password'), pwd):
 			access_token = create_access_token(identity=email)
 			return jsonify(access_token=access_token)
+		else:
+			return jsonify('wrong password'), 401
+	else:
+		return jsonify('user not found'), 401
 
 	#information did not match
 	return "<a href='/login'>Try again</a>\
@@ -108,8 +117,8 @@ def isEmailUnique(email):
 @app.route('/api/profile', methods=['POST'])
 @jwt_required()
 def profile():
-	#get user id
 	_, cursor = connectToDB()
+	#get email
 	email = get_jwt_identity()
 	print(email)
 	if cursor.execute("SELECT first_name, last_name, dob, email, hometown, gender, date_created, username FROM Users  WHERE email = '{0}'".format(email)):
@@ -130,34 +139,46 @@ def profile():
 
 #begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-def allowed_file(filename):
-	return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+ALLOWED_TYPES = set(['image'])
+def allowed_file(mimetype):
+	return (('/' in mimetype and mimetype.split('/')[0] in ALLOWED_TYPES), mimetype)
 
-# @app.route('/upload', methods=['GET', 'POST'])
-# @flask_login.login_required
-# def upload_file():
-# 	if request.method == 'POST':
-# 		uid = getUserIdFromEmail(flask_login.current_user.id)
-# 		imgfile = request.files['photo']
-# 		caption = request.form.get('caption')
-# 		photo_data =imgfile.read()
-# 		cursor = conn.cursor()
-# 		cursor.execute('''INSERT INTO Pictures (imgdata, user_id, caption) VALUES (%s, %s, %s )''' ,(photo_data,uid, caption))
-# 		conn.commit()
-# 		return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!', photos=getUsersPhotos(uid),base64=base64)
-# 	#The method is GET so we return a  HTML form to upload the a photo.
-# 	else:
-# 		return render_template('upload.html')
-# #end photo uploading code
+@app.route('/api/upload', methods=['POST'])
+@jwt_required()
+def upload_file():
+	conn, cursor = connectToDB()
+	#get user id
+	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
+	print(request.files)
+	files = request.files
+	for f in files:
+		allowed, mimetype = allowed_file(files[f].content_type)
+		if not allowed:
+			return Response(status=400)
+		photo_data = files[f].read()
+		cursor.execute('''INSERT INTO Pictures (imgdata, username, type) VALUES (%s, %s, %s)''',(photo_data,username,mimetype))
+		conn.commit()
+		print("Saved file: "+secure_filename(files[f].filename)+" of type: "+files[f].mimetype)
+	return Response(status=200)
 
+@app.route('/api/explore', methods=['GET'])
+def explore():
+	_, cursor = connectToDB()
+	cursor.execute("SELECT picture_id, type FROM Pictures")
+	return jsonify(cursor.fetchall())
 
-# #default page
-# @app.route("/", methods=['GET'])
-# def hello():
-# 	return render_template('hello.html', message='Welecome to Photoshare')
-
-
+@app.route('/api/photo/<id>', methods=['GET'])
+def get_photo(id):
+	_, cursor = connectToDB()
+	cursor.execute("SELECT imgdata, type FROM Pictures WHERE picture_id = '{0}'".format(id))
+	output = cursor.fetchone()
+	imgdata = output[0]
+	mimetype = output[1]
+	im = Image.open(BytesIO(imgdata))
+	width, height = im.size
+	print(width, height)
+	return imgdata, 200, {'Content-Type': mimetype, 'width': width, 'height': height}
 if __name__ == "__main__":
 	#this is invoked when in the shell  you run
 	#$ python app.py

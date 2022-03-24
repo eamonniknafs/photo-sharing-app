@@ -8,22 +8,26 @@ import {
   Register,
   Profile,
   Explore,
+  Uploads,
   useToken,
-  useProfileData
+  useProfileData,
+  usePhotos
 } from "./components";
 
 function App() {
   const { token, removeToken, setToken } = useToken();
-  const { profileData, removeProfileData, setProfileData, updateProfileData } = useProfileData();
+  const { profileData, removeProfileData, setProfileData, fetchProfileData } = useProfileData();
+  const { photos, setPhotos, addPhotos, fetchPhotos, loading } = usePhotos();
 
   return (
     <Router>
-      <Navigation profileData={profileData} token={token} />
+      <Navigation props={{ profileData, token, removeProfileData, removeToken }} />
       <Routes>
-        <Route path="/login" element={<Login setToken={setToken} updateProfileData={ updateProfileData }  />} />
-        <Route path="/register" element={<Register setToken={setToken} updateProfileData={updateProfileData} />} />
+        <Route path="/login" element={<Login props={{ setToken, fetchProfileData }} />} />
+        <Route path="/register" element={<Register props={{ setToken, fetchProfileData }} />} />
         <Route path="/profile" element={<Profile profileData={profileData} />} />
-        <Route path="/" element={<Explore />} />
+        <Route path="/" element={<Explore props={{ photos, setPhotos, addPhotos, fetchPhotos, loading }} />} />
+        <Route path="/upload" element={<Uploads token={token} />} />
       </Routes>
       {/* <Footer /> */}
     </Router>

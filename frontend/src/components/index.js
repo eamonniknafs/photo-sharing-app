@@ -5,5 +5,7 @@ export { default as Login } from "./login/Login";
 export { default as Register } from "./register/Register";
 export { default as Profile } from "./profile/Profile";
 export { default as Explore } from "./explore/Explore";
+export { default as Uploads } from "./uploads/Uploads";
 export { default as useToken } from "./hooks/useToken";
 export { default as useProfileData } from "./hooks/useProfileData";
+export { default as usePhotos } from "./hooks/usePhotos";

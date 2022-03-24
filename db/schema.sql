@@ -45,10 +45,12 @@ CREATE TABLE Pictures
   last_edited TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   username varchar(255) NOT NULL,
   album_id int4,
+  type varchar(255) NOT NULL,
   CONSTRAINT fk_photo_user FOREIGN KEY (username) REFERENCES Users(username),
   CONSTRAINT fk_photo_album FOREIGN KEY (album_id) REFERENCES Albums(album_id)
 );
 ALTER TABLE Albums ADD CONSTRAINT fk_album_cover FOREIGN KEY (cover_photo_id) REFERENCES Pictures(picture_id);
+-- FIXME: Update ER diagram
 
 CREATE TABLE Comments
 (

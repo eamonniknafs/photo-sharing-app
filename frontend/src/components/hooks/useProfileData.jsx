@@ -46,9 +46,10 @@ function useProfileData() {
             since: null,
             username: null
         }));
+        console.log('logout')
     }
 
-    function updateProfileData(token) {
+    function fetchProfileData(token) {
         fetch('/api/profile', {
             method: 'POST',
             headers: {
@@ -74,7 +75,7 @@ function useProfileData() {
         setProfileData: saveProfileData,
         profileData,
         removeProfileData,
-        updateProfileData
+        fetchProfileData
     }
 
 }
