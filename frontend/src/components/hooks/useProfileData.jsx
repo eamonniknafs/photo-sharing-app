@@ -65,7 +65,8 @@ function useProfileData() {
                     hometown: data.hometown,
                     gender: data.gender,
                     since: data.since,
-                    username: data.username
+                    username: data.username,
+                    numphotos: data.numphotos
                 });
             })
 

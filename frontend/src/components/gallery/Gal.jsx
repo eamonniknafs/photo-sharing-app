@@ -59,8 +59,9 @@ function Gal(props) {
     }, []);
 
     function loadMore() {
+        console.log(props.username)
         if (props.username) {
-            props.gallery.fetchPhotos(startLoadingAt, loadCount, props.username)
+            props.gallery.fetchPhotos(startLoadingAt, loadCount, [props.username])
             console.log('LOADING MORE, starting at: ' + startLoadingAt)
         } else {
             props.gallery.fetchPhotos(startLoadingAt, loadCount)

@@ -40,6 +40,18 @@ body, html, .App, #root, .outer {
   transition: all .3s;
 }
 
+.inner-side {
+  width: 450px;
+  height: 100vh;
+  margin: auto;
+  background: #ffffff;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  padding: 40px 55px 45px 55px;
+  border-radius: 15px;
+  transition: all .3s;
+  padding-top: 5vh;
+}
+
 .outer .form-control:focus {
   border-color: #167bff;
   box-shadow: none;
@@ -59,6 +71,21 @@ body, html, .App, #root, .outer {
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+.side{
+  /* display: flex; */
+  /* flex-direction: row; */
+}
+
+.side-profile-content {
+  position: fixed;
+  height: 100vh;
+  top: 0;
+}
+
+.side-gallery {
+  margin-left: 450px;
 }
 
 .login-warning {

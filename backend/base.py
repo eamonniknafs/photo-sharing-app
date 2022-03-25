@@ -120,7 +120,10 @@ def profile():
 	_, cursor = connectToDB()
 	#get email
 	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
 	print(email)
+	cursor.execute("SELECT COUNT(*) FROM Photos WHERE username = '{0}'".format(username))
+	numphotos = cursor.fetchall()[0][0]
 	if cursor.execute("SELECT first_name, last_name, dob, email, hometown, gender, date_created, username FROM Users  WHERE email = '{0}'".format(email)):
 		data = cursor.fetchall()
 		print(data)
@@ -132,7 +135,8 @@ def profile():
 		'hometown': data[0][4],
 		'gender': data[0][5],
 		'since': data[0][6],
-		'username': data[0][7]
+		'username': data[0][7],
+		'numphotos': numphotos
 		})
 	else:
 		return 'Internal error', 500
@@ -163,7 +167,7 @@ def upload_file():
 	return Response(status=200)
 
 @app.route('/api/explore/<start>&<count>', defaults={'username': None},  methods=['GET'])
-@app.route('/api/explore/<start>&<count>?<username>', methods=['GET'])
+@app.route('/api/explore/<start>&<count>/<username>',  methods=['GET'])
 def explore(start, count, username):
 	_, cursor = connectToDB()
 	cursor.execute("SELECT picture_id FROM Pictures ORDER BY picture_id DESC LIMIT 0, 1")
@@ -171,7 +175,7 @@ def explore(start, count, username):
 	if username == None:
 		cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id < '{0}' ORDER BY picture_id DESC LIMIT {1}".format(int(last_id+1) - int(start), count))
 	else:
-		cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id < '{0}' AND username = {1} ORDER BY picture_id DESC LIMIT {2} ".format(last_id+1 - start, username, count))
+		cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id < '{0}' AND username = '{1}' ORDER BY picture_id DESC LIMIT {2} ".format(int(last_id+1) - int(start), username, count))
 	output = cursor.fetchall()
 	if len(output) == 0:
 		return 'no more data', 200

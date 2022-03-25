@@ -17,7 +17,8 @@ import {
   useToken,
   useProfileData,
   usePhotos,
-  useComments
+  useComments,
+  useFriends
 } from "./components";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
   const { profileData, removeProfileData, setProfileData, fetchProfileData } = useProfileData();
   const { photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable } = usePhotos();
   const { comments, setComments, addComment, fetchComments, likes, setLikes, newLike, removeLike, fetchLikes, isLiked, liked, setLiked } = useComments();
+  const { users, setUsers } = useFriends();
 
   library.add(fas)
   library.add(far)
@@ -35,9 +37,10 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login props={{ setToken, fetchProfileData }} />} />
         <Route path="/register" element={<Register props={{ setToken, fetchProfileData }} />} />
-        <Route path="/profile" element={<Profile profileData={profileData} gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable }} comments={{ comments, setComments, addComment, fetchComments }} />} />
+        <Route path="/profile" element={<Profile profileData={{ profileData, token }} gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable }} comments={{ comments, setComments, addComment, fetchComments, likes, setLikes, removeLike, fetchLikes, isLiked, liked, setLiked, newLike }} />} />
         <Route path="/" element={<Explore gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable }} comments={{ comments, setComments, addComment, fetchComments, likes, setLikes, removeLike, fetchLikes, isLiked, liked, setLiked, newLike }} profileData={{ profileData, token }} />} />
         <Route path="/upload" element={<Uploads token={token} />} />
+        <Route path="/friends" element={<Profile  friends={{ users, setUsers }} />} />
       </Routes>
       {/* <Footer /> */}
     </Router>
