@@ -165,10 +165,15 @@ Button:disabled {
   height: 85%;
   overflow-y: scroll;
 }
-/* 
-.comments-title {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 30px;
-  
-} */
+
+.like-button {
+  background: #ffffff;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  position: absolute;
+  position: fixed;
+  bottom: 7.75vh;
+  height: 46px;
+  width: 46px;
+  -ms-transform: translate(0, 0);
+  transform: translate(-7.5vw, 0);
+}

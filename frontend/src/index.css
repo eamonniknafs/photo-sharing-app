@@ -69,3 +69,13 @@ body, html, .App, #root, .outer {
   -ms-transform: translate(-50%);
   transform: translate(-50%);
 }
+
+.require-login {
+  z-index: 9999;
+  margin: 0;
+  position: absolute;
+  bottom: 3vh;
+  left: 50%;
+  -ms-transform: translate(-50%);
+  transform: translate(-50%);
+}

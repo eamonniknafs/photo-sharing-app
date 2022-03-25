@@ -2,7 +2,8 @@ import { useState } from "react";
 
 function useComments() {
     const [comments, setComments] = useState([]);
-    const [likes, setLikes] = useState(["en"]);
+    const [likes, setLikes] = useState(0);
+    const [liked, setLiked] = useState(false);
 
     function addComment(newComment, photoId, token = null) {
         console.log(newComment)
@@ -16,14 +17,24 @@ function useComments() {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
+                // console.log(data)
                 setComments(cmts => [...cmts, data])
             })
         fetchComments(photoId)
     }
 
-    function addLike(username) {
-        setLikes(likes => [...likes, username]);
+    function newLike(photoId, token) {
+        fetch('/api/newlike/' + photoId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(res =>
+            fetchLikes(photoId),
+            isLiked(photoId)
+        )
+
     }
 
     function removeLike(username) {
@@ -34,7 +45,19 @@ function useComments() {
         fetch('/api/likes/' + photoId)
             .then(response => response.json())
             .then(data => {
-                setComments(data);
+                setLikes(data[0][0]);
+            });
+    }
+
+    function isLiked(photoId) {
+        fetch('/api/likes/' + photoId)
+            .then(response => response.json())
+            .then(data => {
+                if (data[0][0] == 0) {
+                    setLiked(false)
+                } else {
+                    setLiked(true)
+                }
             });
     }
 
@@ -63,9 +86,13 @@ function useComments() {
         fetchComments,
         likes,
         setLikes,
-        addLike,
         removeLike,
-        fetchLikes
+        fetchLikes,
+        isLiked,
+        liked,
+        setLiked,
+        newLike
+
     }
 }
 

@@ -96,7 +96,7 @@ def register_user():
 
 def getUsersPhotos(uid):
 	_, cursor = connectToDB()
-	cursor.execute("SELECT imgdata, picture_id, caption FROM Pictures WHERE user_id = '{0}'".format(uid))
+	cursor.execute("SELECT imgdata, picture_id, caption FROM Pictures WHERE username = '{0}'".format(uid))
 	return cursor.fetchall() #NOTE list of tuples, [(imgdata, pid), ...]
 
 def getUsernameFromEmail(email):
@@ -195,7 +195,6 @@ def get_comments(id):
 	_, cursor = connectToDB()
 	cursor.execute("SELECT content, username, comment_id FROM Comments WHERE picture_id = '{0}' AND is_like = false ORDER BY date_edited".format(id))
 	output = cursor.fetchall()
-	print(output)
 	return jsonify(output)
 
 @app.route('/api/comments/<id>', methods=['POST'])
@@ -209,6 +208,38 @@ def post_comment(id):
 		cursor.execute("INSERT INTO Comments (picture_id, username, content, is_like) VALUES ('{0}', '{1}', '{2}', false) ".format(id, username, comment))
 	else:
 		cursor.execute("INSERT INTO Comments (picture_id, content, is_like) VALUES ('{0}', '{1}', false)".format(id, comment))
+	conn.commit()
+	return 'success', 200
+
+@app.route('/api/likes/<id>', methods=['GET'])
+def get_likes(id):
+	_, cursor = connectToDB()
+	cursor.execute("SELECT COUNT(*) FROM Comments WHERE picture_id = '{0}' AND is_like = true".format(id))
+	output = cursor.fetchall()
+	return jsonify(output)
+
+@app.route('/api/liked/<id>', methods=['GET'])
+@jwt_required()
+def isLiked(id):
+	_, cursor = connectToDB()
+	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
+	cursor.execute("SELECT COUNT(*) FROM Comments WHERE picture_id = '{0}' AND is_like = true AND username = '{1}'".format(id, username))
+	output = cursor.fetchall()
+	return jsonify(output)
+
+@app.route('/api/newlike/<id>', methods=['POST'])
+@jwt_required()
+def newLike(id):
+	conn, cursor = connectToDB()
+	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
+	cursor.execute("SELECT COUNT(*) FROM Comments WHERE picture_id = '{0}' AND is_like = true AND username = '{1}'".format(id, username))
+	isliked = cursor.fetchall()
+	if isliked[0][0] == 0:
+		cursor.execute("INSERT INTO Comments (picture_id, username, is_like) VALUES ('{0}', '{1}', true) ".format(id, username))
+	else:
+		cursor.execute("DELETE FROM Comments WHERE picture_id = '{0}' AND is_like = true AND username = '{1}'".format(id, username))
 	conn.commit()
 	return 'success', 200
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Card, Form, Button, Toast } from 'react-bootstrap';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Login(props) {
     const navigate = useNavigate();
@@ -77,7 +78,7 @@ function Login(props) {
             </Card>
             <Toast show={showA} bg="warning" onClose={() => setShowA(false)} delay={4000} autohide className="login-warning">
                 <Toast.Header>
-                    <i className="fas fa-info-circle"></i>
+                    <FontAwesomeIcon icon="fas fa-info-circle" />
                     <strong className="me-auto">No Account Found</strong>
                     {/* <small>11 mins ago</small> */}
                 </Toast.Header>
@@ -85,7 +86,7 @@ function Login(props) {
             </Toast>
             <Toast show={showB} bg="danger" onClose={() => setShowB(false)} delay={4000} autohide className="login-warning">
                 <Toast.Header>
-                    <i className="fas fa-info-circle"></i>
+                    <FontAwesomeIcon icon="fas fa-info-circle" />
                     <strong className="me-auto">Wrong Password</strong>
                     {/* <small>11 mins ago</small> */}
                 </Toast.Header>
