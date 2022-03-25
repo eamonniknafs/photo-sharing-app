@@ -483,3 +483,7 @@ unittest/sql/explain_filename-t
 unittest/sql/my_apc-t
 unittest/sql/sniper_modules-t
 unittest/strings/strings-t
+
+#VSCode
+.vscode**
+**/tmp/**
