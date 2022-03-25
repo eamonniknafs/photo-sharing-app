@@ -6,10 +6,10 @@ This app is a fully featured photo sharing app, where you can create a profile, 
 
 ## Setup Steps
 
-1. `cd backend && pip install requirements.txt`
+1. `cd backend && pip install -r requirements.txt`
 2. `cd ../frontend && yarn install`
-3. `yarn run start`
-4. In a new terminal: `cd frontend && yarn run start-api`
+3. `yarn run start-api`
+4. In a new terminal: `cd frontend && yarn run start`
 
 ## Database Design
 

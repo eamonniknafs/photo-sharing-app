@@ -7,9 +7,9 @@ import { useEffect } from 'react';
 
 
 function Profile(props) {
-    // useEffect(() => {
-    //     props.profileData.fetchProfileData(props.profileData.token);
-    // }, []);
+    useEffect(() => {
+        props.profileData.fetchProfileData(props.profileData.token);
+    }, []);
     console.log(props.profileData.profileData.numphotos)
     return (
         <div className='profile-container'>
