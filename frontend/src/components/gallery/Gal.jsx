@@ -56,6 +56,8 @@ function Gal(props) {
         };
     }, []);
 
+    
+
     function loadMore() {
         console.log(props.username)
         if (props.username) {
@@ -67,6 +69,11 @@ function Gal(props) {
         }
         console.log(props.gallery.photos.length)
     }
+
+    // function loadOne() {
+    //     props.gallery.fetchPhotos(startLoadingAt, loadCount, props.username)
+    //     console.log('LOADING MORE, starting at: ' + startLoadingAt)
+    // }
 
     const [currentImage, setCurrentImage] = useState(0);
     const [viewerIsOpen, setViewerIsOpen] = useState(false);
