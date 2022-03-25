@@ -19,13 +19,15 @@ function CommentsPane(props) {
             <div className="comments-inner">
                 <div>
                     <h3 className="comments-title">Comments</h3>
-                    {props.comments.comments.map(comment => { console.log(comment.id)
-                     return (
-                        <div className="comment" key={comment.id}>
-                            <p className="comment-username">{comment.username ? comment.username : "Anon"}:</p>
-                            <p className="comment-body">{comment.comment}</p>
-                        </div>
-                    )})}
+                    {props.comments.comments.map(comment => {
+                        console.log(comment.id)
+                        return (
+                            <div className="comment" key={comment.id}>
+                                <p className="comment-username">{comment.username ? comment.username : "Anon"}:</p>
+                                <p className="comment-body">{comment.comment}</p>
+                            </div>
+                        )
+                    })}
                 </div>
                 <CommentBox className="comment-box" photo={props.photo} comments={props.comments} profileData={props.profileData} />
             </div>

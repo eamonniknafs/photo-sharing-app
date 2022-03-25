@@ -4,7 +4,7 @@ function useComments() {
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState(["en"]);
 
-    function addComment(newComment, photoId, token=null) {
+    function addComment(newComment, photoId, token = null) {
         console.log(newComment)
         fetch('/api/comments/' + photoId, {
             method: 'POST',
@@ -39,7 +39,7 @@ function useComments() {
     }
 
     function fetchComments(photoId) {
-        fetch('/api/comments/'+photoId)
+        fetch('/api/comments/' + photoId)
             .then(response => response.json())
             .then(data => {
                 let cmts = [];

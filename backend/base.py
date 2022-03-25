@@ -193,8 +193,9 @@ def get_photo(id):
 @app.route('/api/comments/<id>', methods=['GET'])
 def get_comments(id):
 	_, cursor = connectToDB()
-	cursor.execute("SELECT content, username, comment_id FROM Comments WHERE picture_id = '{0}' ORDER BY date_edited".format(id))
+	cursor.execute("SELECT content, username, comment_id FROM Comments WHERE picture_id = '{0}' AND is_like = false ORDER BY date_edited".format(id))
 	output = cursor.fetchall()
+	print(output)
 	return jsonify(output)
 
 @app.route('/api/comments/<id>', methods=['POST'])
@@ -205,9 +206,9 @@ def post_comment(id):
 		verify_jwt_in_request()
 		email = get_jwt_identity()
 		username = getUsernameFromEmail(email)
-		cursor.execute("INSERT INTO Comments (picture_id, username, content) VALUES ('{0}', '{1}', '{2}')".format(id, username, comment))
+		cursor.execute("INSERT INTO Comments (picture_id, username, content, is_like) VALUES ('{0}', '{1}', '{2}', false) ".format(id, username, comment))
 	else:
-		cursor.execute("INSERT INTO Comments (picture_id, content) VALUES ('{0}', '{1}')".format(id, comment))
+		cursor.execute("INSERT INTO Comments (picture_id, content, is_like) VALUES ('{0}', '{1}', false)".format(id, comment))
 	conn.commit()
 	return 'success', 200
 

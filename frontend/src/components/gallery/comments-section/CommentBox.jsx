@@ -39,6 +39,7 @@ export default function CommentBox( props ) {
             comment: commentValue,
         }
         props.comments.addComment(comment, props.photo.id, props.profileData.token);
+        props.comments.fetchComments(props.photo.id);
     };
 
     return (
