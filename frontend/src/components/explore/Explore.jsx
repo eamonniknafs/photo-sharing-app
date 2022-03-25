@@ -1,22 +1,8 @@
-import Gallery from "react-photo-gallery";
-import { Container, Spinner } from 'react-bootstrap';
-import './explore.css'
-import { useEffect } from 'react';
+import Gal from "../gallery/Gal";
 
-function Explore( props ) {
-    function loadMore() {
-        props.props.fetchPhotos()
-    }
-
-    useEffect(() => {
-        loadMore()
-    }, [props.props.loading])
-
+function Explore(props) {
     return (
-        <Container fluid className="content">
-            <Gallery photos={props.props.photos} />
-            <Spinner  animation="grow" />
-        </Container>
+        <Gal gallery={props.gallery} comments={props.comments} profileData={props.profileData}/>
     );
 }
 
