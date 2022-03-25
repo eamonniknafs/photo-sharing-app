@@ -49,16 +49,15 @@ function usePhotos() {
             }).then(function (response) {
                 return response.json();
             }).then(function (data) {
-                console.log(data)
                 if (data === undefined || data.length === 0) {
                     setDataAvailable(false)
                     console.log('NO MORE DATA')
                 } else {
-                console.log(data)
-                for (var idx in data) {
-                    fetchPhotoSrc(data[idx][0])
+                    console.log(data)
+                    for (var idx in data) {
+                        fetchPhotoSrc(data[idx][0])
+                    }
                 }
-            }
             }).catch(() => {
                 setDataAvailable(false)
                 console.log('NO MORE DATA for ' + usernames[user])

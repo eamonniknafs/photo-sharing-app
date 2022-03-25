@@ -13,7 +13,7 @@ function Profile(props) {
     console.log(props.profileData.profileData.numphotos)
     return (
         <div className='profile-container'>
-            {(props.profileData.profileData.numphotos !== 0 && props.profileData.profileData.numphotos !== undefined && props.profileData.profileData.numphotos !== null) ?
+            {(props.profileData.profileData.numphotos !== 0) ?
                 <div className="side">
                     <div className="side-content">
                         <ProfileContent profileData={props.profileData.profileData} />
