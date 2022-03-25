@@ -2,7 +2,7 @@ from datetime import timedelta
 from flask import Flask, Response, request, jsonify
 from flaskext.mysql import MySQL
 from passlib.hash import sha256_crypt
-from flask_jwt_extended import create_access_token, unset_jwt_cookies, get_jwt_identity, jwt_required, JWTManager
+from flask_jwt_extended import create_access_token, unset_jwt_cookies, get_jwt_identity, jwt_required, JWTManager, verify_jwt_in_request
 import werkzeug.formparser
 from werkzeug.utils import secure_filename
 import time
@@ -180,14 +180,37 @@ def explore(start, count, username):
 @app.route('/api/photo/<id>', methods=['GET'])
 def get_photo(id):
 	_, cursor = connectToDB()
-	cursor.execute("SELECT imgdata, type, username FROM Pictures WHERE picture_id = '{0}'".format(id))
+	cursor.execute("SELECT imgdata, type, username, caption FROM Pictures WHERE picture_id = '{0}'".format(id))
 	output = cursor.fetchone()
 	imgdata = output[0]
 	mimetype = output[1]
 	username = output[2]
+	caption = output[3]
 	im = Image.open(BytesIO(imgdata))
 	width, height = im.size
-	return imgdata, 200, {'Content-Type': mimetype, 'width': width, 'height': height, 'username': username}
+	return imgdata, 200, {'Content-Type': mimetype, 'width': width, 'height': height, 'username': username, 'caption': caption}
+
+@app.route('/api/comments/<id>', methods=['GET'])
+def get_comments(id):
+	_, cursor = connectToDB()
+	cursor.execute("SELECT content, username, comment_id FROM Comments WHERE picture_id = '{0}' ORDER BY date_edited".format(id))
+	output = cursor.fetchall()
+	return jsonify(output)
+
+@app.route('/api/comments/<id>', methods=['POST'])
+def post_comment(id):
+	conn, cursor = connectToDB()
+	comment = request.json['comment']
+	if(request.headers.get('Authorization') != "Bearer null"):
+		verify_jwt_in_request()
+		email = get_jwt_identity()
+		username = getUsernameFromEmail(email)
+		cursor.execute("INSERT INTO Comments (picture_id, username, content) VALUES ('{0}', '{1}', '{2}')".format(id, username, comment))
+	else:
+		cursor.execute("INSERT INTO Comments (picture_id, content) VALUES ('{0}', '{1}')".format(id, comment))
+	conn.commit()
+	return 'success', 200
+
 if __name__ == "__main__":
 	#this is invoked when in the shell  you run
 	#$ python app.py

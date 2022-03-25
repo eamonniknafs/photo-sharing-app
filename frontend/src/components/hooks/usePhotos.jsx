@@ -44,7 +44,8 @@ function usePhotos() {
                     blob: blob,
                     width: response.headers.get('width'),
                     height: response.headers.get('height'),
-                    username: response.headers.get('username')
+                    username: response.headers.get('username'),
+                    caption: response.headers.get('caption')
                 };
             });
         }).then(({ blob, width, height, username }) => {
