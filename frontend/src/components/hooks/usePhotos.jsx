@@ -13,7 +13,9 @@ function usePhotos() {
 
     function fetchPhotos(numLoaded, num, usernames = null) {
         if (usernames !== null) {
+            console.log(usernames)
             for (var user in usernames) {
+                setDataAvailable(true)
                 setLoading(true)
                 fetch('/api/explore/' + numLoaded + '&' + num + (usernames[user] != null ? '/' + usernames[user] : ""), {
                     method: 'GET',
@@ -29,11 +31,12 @@ function usePhotos() {
                     }
                 }).catch(() => {
                     setDataAvailable(false)
-                    console.log('NO MORE DATA')
+                    console.log('NO MORE DATA for ' + usernames[user])
                 });
-                setLoading(false)
             }
+            setLoading(false)
         } else {
+            setDataAvailable(true)
             setLoading(true)
             fetch('/api/explore/' + numLoaded + '&' + num, {
                 method: 'GET',
@@ -90,7 +93,8 @@ function usePhotos() {
         addPhotos,
         fetchPhotos,
         loading,
-        dataAvailable
+        dataAvailable,
+        setDataAvailable
     }
 }
 

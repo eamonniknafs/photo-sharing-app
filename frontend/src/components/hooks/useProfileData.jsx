@@ -16,7 +16,8 @@ function useProfileData() {
             hometown: JSON.parse(getProfileData()).hometown,
             gender: JSON.parse(getProfileData()).gender,
             since: JSON.parse(getProfileData()).since,
-            username: JSON.parse(getProfileData()).username
+            username: JSON.parse(getProfileData()).username,
+            numphotos: JSON.parse(getProfileData()).numphotos
         }
         : {
             firstname: null,
@@ -26,7 +27,8 @@ function useProfileData() {
             hometown: null,
             gender: null,
             since: null,
-            username: null
+            username: null,
+            numphotos: null
         });
 
     function saveProfileData(userProfileData) {
@@ -44,7 +46,8 @@ function useProfileData() {
             hometown: null,
             gender: null,
             since: null,
-            username: null
+            username: null,
+            numphotos: null
         }));
         console.log('logout')
     }

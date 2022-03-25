@@ -11,6 +11,7 @@ export { default as Gal } from "./gallery/Gal";
 export { default as CommentsPane } from "./gallery/comments-section/CommentsPane";
 export { default as CommentBox } from "./gallery/comments-section/CommentBox";
 export { default as Friends } from "./friends/Friends";
+export { default as AddFriends } from "./friends/AddFriends";
 
 export { default as useToken } from "./hooks/useToken";
 export { default as useProfileData } from "./hooks/useProfileData";

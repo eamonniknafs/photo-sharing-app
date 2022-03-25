@@ -23,7 +23,7 @@ function Register( props ) {
             .then(function (data) {
                 props.props.fetchProfileData(data.access_token)
                 props.props.setToken(data.access_token)
-            }).finally(navigate('/profile'))
+            }).finally(navigate('/'))
         console.log(sessionStorage.getItem('token'))
         // console.log(JSON.stringify(formData))
     }

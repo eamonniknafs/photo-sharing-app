@@ -17,14 +17,6 @@ function Gal(props) {
 
     useEffect(() => {
         loadMore();
-        let currentPhotos = []
-        for (var pictures in props.gallery.photos) {
-            currentPhotos.push(props.gallery.photos[pictures].id)
-        }
-        currentPhotos.sort(function (a, b) {
-            return a - b;
-        })
-        console.log(currentPhotos)
     }, [startLoadingAt])
 
     useEffect(() => {
@@ -40,6 +32,12 @@ function Gal(props) {
             }
         }
     }, [bottom, props.gallery.loading, props.gallery.dataAvailable])
+
+    // useEffect(() => {
+    //     // setCurrId(props.gallery.photos[props.gallery.photos.length - 1]?.id + 1)
+    //     // props.gallery.setPhotos([])
+    //     // loadMore()
+    // }, [props.username])
 
     // useEffect(() => {
     //     setCurrId(props.gallery.photos[props.gallery.photos.length - 1]?.id + 1)
@@ -61,12 +59,13 @@ function Gal(props) {
     function loadMore() {
         console.log(props.username)
         if (props.username) {
-            props.gallery.fetchPhotos(startLoadingAt, loadCount, [props.username])
+            props.gallery.fetchPhotos(startLoadingAt, loadCount, props.username)
             console.log('LOADING MORE, starting at: ' + startLoadingAt)
         } else {
             props.gallery.fetchPhotos(startLoadingAt, loadCount)
             console.log('LOADING MORE, starting at: ' + startLoadingAt)
         }
+        console.log(props.gallery.photos.length)
     }
 
     const [currentImage, setCurrentImage] = useState(0);
@@ -111,15 +110,15 @@ function Gal(props) {
         }
     };
 
-    document.addEventListener('keydown', function (e) {
-        if (e.key === "Escape") {
-            closeLightbox();
-        } else if (e.key === "ArrowRight") {
-            showNext();
-        } else if (e.key === "ArrowLeft") {
-            showPrev();
-        }
-    });
+    // document.addEventListener('keydown', function (e) {
+    //     if (e.key === "Escape") {
+    //         closeLightbox();
+    //     } else if (e.key === "ArrowRight") {
+    //         showNext();
+    //     } else if (e.key === "ArrowLeft") {
+    //         showPrev();
+    //     }
+    // });
 
     return (
         <Container fluid className="content">

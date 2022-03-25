@@ -5,7 +5,7 @@ function ProfileContent(props) {
         <div>
             {
                 (props.numPhotos === 0) ?
-                    <Card className="inner">
+                    <Card className="profile-inner">
                         <Card.Body>
                             <Container>
                                 <Card.Title><h1>Profile</h1></Card.Title>

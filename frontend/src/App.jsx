@@ -18,15 +18,16 @@ import {
   useProfileData,
   usePhotos,
   useComments,
-  useFriends
+  useFriends,
+  Friends
 } from "./components";
 
 function App() {
   const { token, removeToken, setToken } = useToken();
   const { profileData, removeProfileData, setProfileData, fetchProfileData } = useProfileData();
-  const { photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable } = usePhotos();
+  const { photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable, setDataAvailable } = usePhotos();
   const { comments, setComments, addComment, fetchComments, likes, setLikes, newLike, removeLike, fetchLikes, isLiked, liked, setLiked } = useComments();
-  const { users, setUsers } = useFriends();
+  const { users, getUsers, friends, getFriends, addRemoveFriend } = useFriends();
 
   library.add(fas)
   library.add(far)
@@ -37,10 +38,10 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login props={{ setToken, fetchProfileData }} />} />
         <Route path="/register" element={<Register props={{ setToken, fetchProfileData }} />} />
-        <Route path="/profile" element={<Profile profileData={{ profileData, token }} gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable }} comments={{ comments, setComments, addComment, fetchComments, likes, setLikes, removeLike, fetchLikes, isLiked, liked, setLiked, newLike }} />} />
-        <Route path="/" element={<Explore gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable }} comments={{ comments, setComments, addComment, fetchComments, likes, setLikes, removeLike, fetchLikes, isLiked, liked, setLiked, newLike }} profileData={{ profileData, token }} />} />
+        <Route path="/profile" element={<Profile profileData={{ profileData, token }} gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable, setDataAvailable }} comments={{ comments, setComments, addComment, fetchComments, likes, setLikes, removeLike, fetchLikes, isLiked, liked, setLiked, newLike }} />} />
+        <Route path="/" element={<Explore gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable, setDataAvailable }} comments={{ comments, setComments, addComment, fetchComments, likes, setLikes, removeLike, fetchLikes, isLiked, liked, setLiked, newLike }} profileData={{ profileData, token }} />} />
         <Route path="/upload" element={<Uploads token={token} />} />
-        <Route path="/friends" element={<Profile  friends={{ users, setUsers }} />} />
+        <Route path="/friends" element={<Friends profileData={{ profileData, token }} gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable, setDataAvailable }} comments={{ comments, setComments, addComment, fetchComments, likes, setLikes, removeLike, fetchLikes, isLiked, liked, setLiked, newLike }} friends={{ users, getUsers, friends, getFriends, addRemoveFriend }} />} />
       </Routes>
       {/* <Footer /> */}
     </Router>

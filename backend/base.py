@@ -122,9 +122,9 @@ def profile():
 	email = get_jwt_identity()
 	username = getUsernameFromEmail(email)
 	print(email)
-	cursor.execute("SELECT COUNT(*) FROM Photos WHERE username = '{0}'".format(username))
+	cursor.execute("SELECT COUNT(*) FROM Pictures WHERE username = '{0}'".format(username))
 	numphotos = cursor.fetchall()[0][0]
-	if cursor.execute("SELECT first_name, last_name, dob, email, hometown, gender, date_created, username FROM Users  WHERE email = '{0}'".format(email)):
+	if cursor.execute("SELECT first_name, last_name, dob, email, hometown, gender, date_created, username FROM Users WHERE username = '{0}'".format(username)):
 		data = cursor.fetchall()
 		print(data)
 		return jsonify({
@@ -140,6 +140,53 @@ def profile():
 		})
 	else:
 		return 'Internal error', 500
+
+@app.route('/api/users', methods=['POST'])
+@jwt_required()
+def users():
+	_, cursor = connectToDB()
+	#get email
+	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
+	if cursor.execute("SELECT username FROM Users WHERE username != '{0}'".format(username)):
+		data = cursor.fetchall()
+		return jsonify(data)
+	else:
+		return 'Internal error', 500
+
+@app.route('/api/friends', methods=['POST'])
+@jwt_required()
+def fetchFriends():
+	_, cursor = connectToDB()
+	#get email
+	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
+	cursor.execute("SELECT friend_username FROM Friend_Of WHERE username = '{0}'".format(username))
+	data = cursor.fetchall()
+	print(data)
+	return jsonify(data)
+
+@app.route('/api/addremovefriend', methods=['POST'])
+@jwt_required()
+def addremovefriend():
+	conn, cursor = connectToDB()
+	#get email
+	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
+	print(username)
+	friend_username = request.json.get('friend_username')
+	print(friend_username)
+	if cursor.execute("SELECT friend_username FROM Friend_Of WHERE username = '{0}' AND friend_username = '{1}'".format(username, friend_username)):
+		#this means there are greater than zero entries with that email
+		cursor.execute("DELETE FROM Friend_Of WHERE username = '{0}' AND friend_username = '{1}'".format(username, friend_username))
+		conn.commit()
+		return 'removed'
+	else:
+		cursor.execute("INSERT INTO Friend_Of (username, friend_username) VALUES ('{0}', '{1}')".format(username, friend_username))
+		conn.commit()
+		return 'added'
+	return 'not implemented', 200
+
 
 #begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
