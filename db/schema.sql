@@ -50,7 +50,6 @@ CREATE TABLE Pictures
   CONSTRAINT fk_photo_album FOREIGN KEY (album_id) REFERENCES Albums(album_id)
 );
 ALTER TABLE Albums ADD CONSTRAINT fk_album_cover FOREIGN KEY (cover_photo_id) REFERENCES Pictures(picture_id);
--- FIXME: Update ER diagram
 
 CREATE TABLE Comments
 (
