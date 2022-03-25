@@ -218,14 +218,15 @@ def upload_file():
 def explore(start, count, username):
 	_, cursor = connectToDB()
 	cursor.execute("SELECT picture_id FROM Pictures ORDER BY picture_id DESC LIMIT 0, 1")
-	last_id = cursor.fetchone()[0]
+	# last_id = cursor.fetchone()[0]
 	if username == None:
-		cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id < '{0}' ORDER BY picture_id DESC LIMIT {1}".format(int(last_id+1) - int(start), count))
+		cursor.execute("SELECT picture_id, type FROM Pictures ORDER BY picture_id DESC LIMIT {1} OFFSET {0}".format(
+			int(start), count))
 	else:
-		cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id < '{0}' AND username = '{1}' ORDER BY picture_id DESC LIMIT {2} ".format(int(last_id+1) - int(start), username, count))
+		cursor.execute("SELECT picture_id, type FROM Pictures WHERE username = '{1}' ORDER BY picture_id DESC LIMIT {2} OFFSET {0}".format(
+			int(start), username, count))
 	output = cursor.fetchall()
-	if len(output) == 0:
-		return 'no more data', 200
+	print(output)
 	return jsonify(output)
 
 @app.route('/api/photo/<id>', methods=['GET'])

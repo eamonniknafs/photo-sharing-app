@@ -15,7 +15,6 @@ function usePhotos() {
         if (usernames !== null) {
             console.log(usernames)
             for (var user in usernames) {
-                setDataAvailable(true)
                 setLoading(true)
                 fetch('/api/explore/' + numLoaded + '&' + num + (usernames[user] != null ? '/' + usernames[user] : ""), {
                     method: 'GET',
@@ -25,9 +24,14 @@ function usePhotos() {
                 }).then(function (response) {
                     return response.json();
                 }).then(function (data) {
-                    console.log(data)
-                    for (var idx in data) {
-                        fetchPhotoSrc(data[idx][0])
+                    if (data === undefined || data.length === 0) {
+                        setDataAvailable(false)
+                        console.log('NO MORE DATA')
+                    } else {
+                        console.log(data)
+                        for (var idx in data) {
+                            fetchPhotoSrc(data[idx][0])
+                        }
                     }
                 }).catch(() => {
                     setDataAvailable(false)
@@ -36,7 +40,6 @@ function usePhotos() {
             }
             setLoading(false)
         } else {
-            setDataAvailable(true)
             setLoading(true)
             fetch('/api/explore/' + numLoaded + '&' + num, {
                 method: 'GET',
@@ -47,12 +50,18 @@ function usePhotos() {
                 return response.json();
             }).then(function (data) {
                 console.log(data)
+                if (data === undefined || data.length === 0) {
+                    setDataAvailable(false)
+                    console.log('NO MORE DATA')
+                } else {
+                console.log(data)
                 for (var idx in data) {
                     fetchPhotoSrc(data[idx][0])
                 }
+            }
             }).catch(() => {
                 setDataAvailable(false)
-                console.log('NO MORE DATA')
+                console.log('NO MORE DATA for ' + usernames[user])
             });
             setLoading(false)
         }

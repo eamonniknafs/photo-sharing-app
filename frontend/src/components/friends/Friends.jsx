@@ -10,6 +10,7 @@ function Friends(props) {
     const [refresh, setRefresh] = useState(false);
     useEffect(() => {
         props.friends.getFriends(props.profileData.token);
+        console.log(props.friends.friends)
     }, [refresh]);
     return (
         <div>
@@ -17,9 +18,9 @@ function Friends(props) {
                 <div className="side-content">
                     <AddFriends profileData={props.profileData} friends={props.friends} setRefresh={setRefresh} />
                 </div>
-                <div className="side-gallery">
+                {props.friends.friends.length !== 0 ? <div className="side-gallery">
                     <Gal gallery={props.gallery} comments={props.comments} profileData={props.profileData} username={props.friends.friends} />
-                </div>
+                </div> : null}
             </div >
         </div>
     );
