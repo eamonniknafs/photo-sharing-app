@@ -120,8 +120,11 @@ def profile():
 	_, cursor = connectToDB()
 	#get email
 	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
 	print(email)
-	if cursor.execute("SELECT first_name, last_name, dob, email, hometown, gender, date_created, username FROM Users  WHERE email = '{0}'".format(email)):
+	cursor.execute("SELECT COUNT(*) FROM Pictures WHERE username = '{0}'".format(username))
+	numphotos = cursor.fetchall()[0][0]
+	if cursor.execute("SELECT first_name, last_name, dob, email, hometown, gender, date_created, username FROM Users WHERE username = '{0}'".format(username)):
 		data = cursor.fetchall()
 		print(data)
 		return jsonify({
@@ -132,10 +135,58 @@ def profile():
 		'hometown': data[0][4],
 		'gender': data[0][5],
 		'since': data[0][6],
-		'username': data[0][7]
+		'username': data[0][7],
+		'numphotos': numphotos
 		})
 	else:
 		return 'Internal error', 500
+
+@app.route('/api/users', methods=['POST'])
+@jwt_required()
+def users():
+	_, cursor = connectToDB()
+	#get email
+	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
+	if cursor.execute("SELECT username FROM Users WHERE username != '{0}'".format(username)):
+		data = cursor.fetchall()
+		return jsonify(data)
+	else:
+		return 'Internal error', 500
+
+@app.route('/api/friends', methods=['POST'])
+@jwt_required()
+def fetchFriends():
+	_, cursor = connectToDB()
+	#get email
+	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
+	cursor.execute("SELECT friend_username FROM Friend_Of WHERE username = '{0}'".format(username))
+	data = cursor.fetchall()
+	print(data)
+	return jsonify(data)
+
+@app.route('/api/addremovefriend', methods=['POST'])
+@jwt_required()
+def addremovefriend():
+	conn, cursor = connectToDB()
+	#get email
+	email = get_jwt_identity()
+	username = getUsernameFromEmail(email)
+	print(username)
+	friend_username = request.json.get('friend_username')
+	print(friend_username)
+	if cursor.execute("SELECT friend_username FROM Friend_Of WHERE username = '{0}' AND friend_username = '{1}'".format(username, friend_username)):
+		#this means there are greater than zero entries with that email
+		cursor.execute("DELETE FROM Friend_Of WHERE username = '{0}' AND friend_username = '{1}'".format(username, friend_username))
+		conn.commit()
+		return 'removed'
+	else:
+		cursor.execute("INSERT INTO Friend_Of (username, friend_username) VALUES ('{0}', '{1}')".format(username, friend_username))
+		conn.commit()
+		return 'added'
+	return 'not implemented', 200
+
 
 #begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
@@ -163,7 +214,7 @@ def upload_file():
 	return Response(status=200)
 
 @app.route('/api/explore/<start>&<count>', defaults={'username': None},  methods=['GET'])
-@app.route('/api/explore/<start>&<count>?<username>', methods=['GET'])
+@app.route('/api/explore/<start>&<count>/<username>',  methods=['GET'])
 def explore(start, count, username):
 	_, cursor = connectToDB()
 	cursor.execute("SELECT picture_id FROM Pictures ORDER BY picture_id DESC LIMIT 0, 1")
@@ -171,7 +222,7 @@ def explore(start, count, username):
 	if username == None:
 		cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id < '{0}' ORDER BY picture_id DESC LIMIT {1}".format(int(last_id+1) - int(start), count))
 	else:
-		cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id < '{0}' AND username = {1} ORDER BY picture_id DESC LIMIT {2} ".format(last_id+1 - start, username, count))
+		cursor.execute("SELECT picture_id, type FROM Pictures WHERE picture_id < '{0}' AND username = '{1}' ORDER BY picture_id DESC LIMIT {2} ".format(int(last_id+1) - int(start), username, count))
 	output = cursor.fetchall()
 	if len(output) == 0:
 		return 'no more data', 200

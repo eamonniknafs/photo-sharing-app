@@ -2,7 +2,14 @@
 
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vestibulum faucibus placerat. Praesent ut lectus eros. Curabitur porttitor pharetra tortor, vel suscipit nunc gravida sed. Nullam sagittis, ipsum at posuere interdum, nulla urna condimentum odio, mollis scelerisque arcu lacus et lorem. Vivamus sed semper elit. Etiam bibendum posuere facilisis. Ut rutrum mollis diam, quis condimentum sapien malesuada nec. Cras sed mauris purus. Proin eget sapien dignissim, dictum erat a, pretium sapien. Vivamus suscipit tellus arcu, et finibus velit semper in. Nullam maximus, ex non volutpat elementum, sem nisi eleifend dui, ac commodo ligula tortor commodo risus. Quisque dapibus nibh ipsum, eget euismod eros elementum et. Maecenas dui odio, faucibus ac convallis vitae, malesuada nec lorem. Aenean varius massa in elementum aliquet. Pellentesque arcu erat, fringilla quis sem sed, lacinia tincidunt dui. Fusce non blandit metus, eget iaculis lectus.
+This app is a fully featured photo sharing app, where you can create a profile, upload photos, add friends, and like and comment on content. It uses a MySQL database, using Flask as the backend framework. For APIs, this app uses React.JS requests (which are Express requests).
+
+## Setup Steps
+
+1. `cd backend && pip install requirements.txt`
+2. `cd ../frontend && yarn install`
+3. `yarn run start`
+4. In a new terminal: `cd frontend && yarn run start-api`
 
 ## Database Design
 

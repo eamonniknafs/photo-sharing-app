@@ -11,25 +11,51 @@ function usePhotos() {
         }
     }
 
-    function fetchPhotos(numLoaded, num, username = null) {
-        setLoading(true)
-        fetch('/api/explore/' + numLoaded + '&' + num + (username != null ? '?' + username : ""), {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
+    function fetchPhotos(numLoaded, num, usernames = null) {
+        if (usernames !== null) {
+            console.log(usernames)
+            for (var user in usernames) {
+                setDataAvailable(true)
+                setLoading(true)
+                fetch('/api/explore/' + numLoaded + '&' + num + (usernames[user] != null ? '/' + usernames[user] : ""), {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                    console.log(data)
+                    for (var idx in data) {
+                        fetchPhotoSrc(data[idx][0])
+                    }
+                }).catch(() => {
+                    setDataAvailable(false)
+                    console.log('NO MORE DATA for ' + usernames[user])
+                });
             }
-        }).then(function (response) {
-            return response.json();
-        }).then(function (data) {
-            console.log(data)
-            for (var idx in data) {
-                fetchPhotoSrc(data[idx][0])
-            }
-        }).catch(() => {
-            setDataAvailable(false)
-            console.log('NO MORE DATA')
-        });
-        setLoading(false)
+            setLoading(false)
+        } else {
+            setDataAvailable(true)
+            setLoading(true)
+            fetch('/api/explore/' + numLoaded + '&' + num, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                console.log(data)
+                for (var idx in data) {
+                    fetchPhotoSrc(data[idx][0])
+                }
+            }).catch(() => {
+                setDataAvailable(false)
+                console.log('NO MORE DATA')
+            });
+            setLoading(false)
+        }
     }
 
     function fetchPhotoSrc(id) {
@@ -67,7 +93,8 @@ function usePhotos() {
         addPhotos,
         fetchPhotos,
         loading,
-        dataAvailable
+        dataAvailable,
+        setDataAvailable
     }
 }
 
