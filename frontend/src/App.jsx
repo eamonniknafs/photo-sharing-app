@@ -38,7 +38,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login props={{ setToken, fetchProfileData }} />} />
         <Route path="/register" element={<Register props={{ setToken, fetchProfileData }} />} />
-        <Route path="/profile" element={<Profile profileData={{ profileData, token }} gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable, setDataAvailable }} comments={{ comments, setComments, addComment, fetchComments, likes, setLikes, removeLike, fetchLikes, isLiked, liked, setLiked, newLike }} />} />
+        <Route path="/profile" element={<Profile profileData={{ profileData, fetchProfileData, token }} gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable, setDataAvailable }} comments={{ comments, setComments, addComment, fetchComments, likes, setLikes, removeLike, fetchLikes, isLiked, liked, setLiked, newLike }} />} />
         <Route path="/" element={<Explore gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable, setDataAvailable }} comments={{ comments, setComments, addComment, fetchComments, likes, setLikes, removeLike, fetchLikes, isLiked, liked, setLiked, newLike }} profileData={{ profileData, token }} />} />
         <Route path="/upload" element={<Uploads token={token} />} />
         <Route path="/friends" element={<Friends profileData={{ profileData, token }} gallery={{ photos, setPhotos, addPhotos, fetchPhotos, loading, dataAvailable, setDataAvailable }} comments={{ comments, setComments, addComment, fetchComments, likes, setLikes, removeLike, fetchLikes, isLiked, liked, setLiked, newLike }} friends={{ users, getUsers, friends, getFriends, addRemoveFriend }} />} />

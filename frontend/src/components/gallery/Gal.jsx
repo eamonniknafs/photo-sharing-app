@@ -26,22 +26,11 @@ function Gal(props) {
             console.log('dataAvailable: ' + props.gallery.dataAvailable)
             console.log('loading: ' + props.gallery.loading)
             if (props.gallery.dataAvailable && !props.gallery.loading) {
-                // console.log("currID: " + currId)
                 setStartLoadingAt(start => start + loadCount)
                 console.log('CHANGED')
             }
         }
     }, [bottom, props.gallery.loading, props.gallery.dataAvailable])
-
-    // useEffect(() => {
-    //     // setCurrId(props.gallery.photos[props.gallery.photos.length - 1]?.id + 1)
-    //     // props.gallery.setPhotos([])
-    //     // loadMore()
-    // }, [props.username])
-
-    // useEffect(() => {
-    //     setCurrId(props.gallery.photos[props.gallery.photos.length - 1]?.id + 1)
-    // }, [props.gallery.photos])
 
     const handleScroll = () => {
         setBottom(Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight)
@@ -59,7 +48,7 @@ function Gal(props) {
     
 
     function loadMore() {
-        console.log(props.username)
+        console.log(startLoadingAt)
         if (props.username) {
             props.gallery.fetchPhotos(startLoadingAt, loadCount, props.username)
             console.log('LOADING MORE, starting at: ' + startLoadingAt)
@@ -67,7 +56,6 @@ function Gal(props) {
             props.gallery.fetchPhotos(startLoadingAt, loadCount)
             console.log('LOADING MORE, starting at: ' + startLoadingAt)
         }
-        console.log(props.gallery.photos.length)
     }
 
     // function loadOne() {
